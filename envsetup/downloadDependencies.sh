@@ -3,8 +3,8 @@
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 . $SCRIPT_DIR/common.sh
 
-VENDOR=$TOPDIR/openGLRenderingEngine/vendor
 mkdir $VENDOR
+
 # Donwload STB
 cd $VENDOR
 STB_IMAGE_LIB="https://raw.githubusercontent.com/nothings/stb/master/stb_image.h"

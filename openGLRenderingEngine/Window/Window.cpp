@@ -28,7 +28,7 @@ void Window::config() {
 	glfwWindowHint(GLFW_OPENGL_PROFILE,GLFW_OPENGL_CORE_PROFILE);
 
 	/* Create a windowed mode window and its OpenGL context */
-	window = glfwCreateWindow(1000, 1000, "OpenglWindow", NULL, NULL);
+	window = glfwCreateWindow(width, height, "OpenglWindow", NULL, NULL);
 	if (!window) {
 		glfwTerminate();
         runtime_error("Failed to create glfw window");

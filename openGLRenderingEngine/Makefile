@@ -21,7 +21,7 @@ TARGET = window
 all: $(TARGET)
 	echo Done Building
 
-$(TARGET): $(cppFiles) $(hppFiles) $(hFiles)
+$(TARGET): $(cppFiles) $(hppFiles) $(hFiles) $(vendorFilesToBuild)
 	$(CXX) $(CXXFLAGS) -o $(TARGET) $(cppFiles) $(vendorFilesToBuild) $(LDFLAGS)
 
 .PHONY: clean

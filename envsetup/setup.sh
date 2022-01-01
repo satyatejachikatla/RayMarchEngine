@@ -9,3 +9,4 @@ python3 -m virtualenv $VENV_PATH
 . $SCRIPT_DIR/env.sh
 pip3 install -r $SCRIPT_DIR/requirements.txt
 
+$SCRIPT_DIR/downloadDependencies.sh

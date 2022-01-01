@@ -7,8 +7,8 @@
 using namespace std;
 
 int main() {
-    int width = 100;
-    int height = 100;
+    int width = 640;
+    int height = 480;
     try
     {
         Window window{width,height};
