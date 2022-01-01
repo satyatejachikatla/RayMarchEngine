@@ -11,7 +11,7 @@ With the help of the above system , built a Ray March engine with reusable code 
 ## Example
 
 ```
-python3 compileAndRun.py --mainFile ./main.glsl --recompileWindow
+./compileAndRun.py --mainFile ./main.glsl --recompileWindow
 ```
 
 # References
