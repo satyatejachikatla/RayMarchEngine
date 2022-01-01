@@ -5,6 +5,8 @@
 
 #include <ScreenQuad/ScreenQuad.hpp>
 
+#include <string>
+
 class Window {
 
     private:
@@ -12,6 +14,8 @@ class Window {
         GLFWwindow* window;
         int width;
         int height;
+
+        std::string  shaderName;
 
         void config();
 
@@ -26,4 +30,6 @@ class Window {
 
         int getWidth() { return width;}
         int getHeight() { return height;}
+
+        void setShaderName(std::string shaderName) {this->shaderName = shaderName;}
 };

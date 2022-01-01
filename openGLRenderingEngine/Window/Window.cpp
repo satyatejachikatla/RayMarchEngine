@@ -8,7 +8,7 @@
 using namespace std;
 
 
-Window::Window(int width,int height) : width(width) , height(height){
+Window::Window(int width,int height) : width(width) , height(height) ,shaderName("./shader/staged.shader"){
 	config();
 }
 
@@ -68,7 +68,7 @@ void Window::config() {
 
 void Window::display() {
 
-		screenQuad = new ScreenQuad(width,height,"./shader/Test.shader",window);
+		screenQuad = new ScreenQuad(width,height,shaderName,window);
 
 		while (!glfwWindowShouldClose(window)) {
 

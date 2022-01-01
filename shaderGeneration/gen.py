@@ -5,9 +5,9 @@ import re
 class RayMarchGLSLGenerator(object):
     '''
     Does following
-    1. Append core.glsl code to all the files
-    2. Preprocess all the #include code
-    3. Consider all the #pragma once code
+    1. Preprocess all the #include code
+    2. Consider all the #pragma once code
+    3. Append core.glsl code to first invocation file
     '''
     VALID_PATH_PATTERN = '\S+'
     INCLUDE_PATTERN = '#include\s*(?:"{VALID_PATH_PATTERN}"|<{VALID_PATH_PATTERN}>)\s*'.format(VALID_PATH_PATTERN=VALID_PATH_PATTERN)
@@ -19,7 +19,8 @@ class RayMarchGLSLGenerator(object):
     INCLUDE_TYPE_QUOTES = 0
     INCLUDE_TYPE_ANGLE_BRACKETS = 1
 
-    CORE_GLSL_CODE_STRING = open(os.path.dirname(__file__)+'/core.glsl').read()
+    CORE_GLSL_FILE = os.path.dirname(__file__)+'/coreHeader.glsl'
+    CORE_GLSL_CODE_STRING = open(CORE_GLSL_FILE).read()
 
     FILES_PROCESSED_CACHE = {
 
