@@ -18,8 +18,6 @@ void main()
 #shader fragment
 #version 410 core
 
-#define PI 3.1415926535897932384626433832795
-
 layout(location = 0) out vec4 fragColor;
 
 in vec2 v_position;

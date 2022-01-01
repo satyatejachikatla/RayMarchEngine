@@ -1,0 +1,24 @@
+#pragma once
+
+/*
+    2D Transforms
+*/
+
+vec2 translate(vec2 uv ,vec2 move) {
+	return uv - move;
+}
+
+vec2 scale(vec2 uv ,vec2 scaleFactor) {
+	return uv*scaleFactor;
+}
+
+vec2 rotate(vec2 uv ,float angle) {
+
+    float s = sin(angle);
+    float c = cos(angle);
+
+	float xnew = uv.x * c - uv.y * s;
+    float ynew = uv.x * s + uv.y * c;
+
+    return vec2(xnew,ynew);
+}

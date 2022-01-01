@@ -1,0 +1,39 @@
+#pragma once
+
+/*
+    Returns mouse co-ords in range [-0.5,0.5] in y and appropriate linear interpolated range in x
+*/
+vec2 getMouseNormalized() {
+    vec2 mouse = vec2(u_Mouse.x-0.5*u_Resolution.x, u_Mouse.y)/u_Resolution.y;
+    return mouse;
+}
+
+/*
+    Returns mouse co-ords in range [0,maxScreenDimension] in both x and y
+*/
+vec2 getMouse() {
+    return u_Mouse;
+}
+
+/*
+    Returns pixel co-ords in range [-0.5,0.5] in y and appropriate linear interpolated range in x
+*/
+vec2 getPixelNormalized() {
+    vec2 uv = (v_position-.5*u_Resolution.xy)/u_Resolution.y;
+    return uv;
+}
+
+/*
+    Returns pixel co-ords in range [0,maxScreenDimension] in both x and y
+*/
+vec2 getPixel() {
+    return v_position;
+}
+
+
+/*
+    Returns time in seconds
+*/
+float getTime() {
+    return u_Time;
+}
