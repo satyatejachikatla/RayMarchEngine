@@ -16,6 +16,6 @@ python3 compileAndRun.py --mainFile ./main.glsl --recompileWindow
 
 # References
 
-PySpace by HackerPoet : https://github.com/HackerPoet/PySpace
-CodeParade Video : https://www.youtube.com/watch?v=svLzmFuSBhk
-Art of code : https://www.youtube.com/channel/UCcAlTqd9zID6aNX3TzwxJXg
+* PySpace by HackerPoet : https://github.com/HackerPoet/PySpace
+* CodeParade Video : https://www.youtube.com/watch?v=svLzmFuSBhk
+* Art of code : https://www.youtube.com/channel/UCcAlTqd9zID6aNX3TzwxJXg
