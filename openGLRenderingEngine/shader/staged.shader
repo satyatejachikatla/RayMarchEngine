@@ -222,7 +222,6 @@ void main()
 
 	vec3 rayDirection = getCamera3DRay(cam); // returns the ray direction for the current pixel
 
-
 	float rayHitDistance = RayMarch(cam.rayOrigin,rayDirection);
 	vec3 rayHitPosition = cam.rayOrigin + rayDirection * rayHitDistance;
 	float l = GetLight(rayHitPosition);

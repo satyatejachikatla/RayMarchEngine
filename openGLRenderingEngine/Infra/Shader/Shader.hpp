@@ -10,9 +10,11 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-struct ShaderProgrameSource {
+struct ShaderProgramSource {
 	std::string VertexSource;
 	std::string FragmentSource;
+
+	void saveShaders(std::string& folder);
 };
 
 class Shader {
@@ -26,7 +28,7 @@ class Shader {
 		std::string m_FilePath;
 		mutable std::unordered_map<std::string,int> m_UniformLocationCache;  
 
-		ShaderProgrameSource ParseShader(const std::string filePath);
+		ShaderProgramSource ParseShader(const std::string filePath);
 		unsigned int CompileShader(unsigned int type,const std::string& source);
 		unsigned int CreateShader(const std::string& vertexShader,const std::string& fragmentShader );
 

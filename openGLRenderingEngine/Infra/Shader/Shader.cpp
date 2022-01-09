@@ -9,19 +9,46 @@
 
 #include <GL/glew.h>
 
+#include <fstream>
+#include <string>
+#include <iostream>
+
 using namespace std;
 
 std::vector<unsigned int> Shader::TotalRendererIDList_;
 
+std::string getDirectory(std::string filepath) {
+	std::string directory;
+	const size_t last_slash_idx = filepath.rfind('/');
+	if (std::string::npos != last_slash_idx)
+	{
+		directory = filepath.substr(0, last_slash_idx);
+	}
+	return directory;
+}
+
+void ShaderProgramSource::saveShaders(std::string& folder) {
+
+	std::string vertexSourceSave = folder + "/vertex.glsl";
+	std::string fragmentSourceSave = folder + "/fragment.glsl";
+
+    std::ofstream outVertex(vertexSourceSave);
+    outVertex << VertexSource;
+    outVertex.close();
+
+    std::ofstream outFragment(fragmentSourceSave);
+    outFragment << FragmentSource;
+    outFragment.close();
+
+}
+
 Shader::Shader(const std::string& filepath)
 	: m_FilePath(filepath), m_RendererID(0), m_LoadFailedFlag(false) {
 
-	ShaderProgrameSource source = ParseShader(filepath);
+	ShaderProgramSource source = ParseShader(filepath);
 
-    //	std::cout << "Vertex" << std::endl;
-    //	std::cout << source.VertexSource << std::endl;
-    //	std::cout << "Fragment" << std::endl;
-    //	std::cout << source.FragmentSource << std::endl;
+	std::string folder = getDirectory(filepath);
+	source.saveShaders(folder);
 
 	glCall(m_RendererID=CreateShader(source.VertexSource,source.FragmentSource));
 
@@ -89,7 +116,7 @@ unsigned int Shader::GetUniformLocation(const std::string& name) const {
 }
 
 
-ShaderProgrameSource Shader::ParseShader(const std::string filePath) {
+ShaderProgramSource Shader::ParseShader(const std::string filePath) {
 
 	std::ifstream stream(filePath);
 
