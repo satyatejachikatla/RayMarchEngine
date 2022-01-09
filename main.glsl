@@ -9,12 +9,18 @@ void main()
 	vec2 mouse = getMouseNormalized();
 	float sec = getTime();
 
-	uv = translate(uv,vec2(-.5,-.5));
+	Camera3D cam;
+   	cam.zoom = 1.; // No zoom
+    cam.lookAt = vec3(-mouse,1.);
+    cam.rayOrigin = vec3(-0.,1.,-0);
+    cam.upWorld = vec3(0.,1.,0.); // Up of the worl will always be y
 
-	uv = rotate(uv,sec);
-	// uv = translate(uv,-mouse);
+	vec3 rayDirection = getCamera3DRay(cam); // returns the ray direction for the current pixel
 
-	vec3 col = vec3(uv,0.);
+	float rayHitDistance = RayMarch(cam.rayOrigin,rayDirection);
+	vec3 rayHitPosition = cam.rayOrigin + rayDirection * rayHitDistance;
+	float l = GetLight(rayHitPosition);
+	vec3 col = vec3(l);
 	
 	fragColor = vec4(col,1.0);
 }

@@ -7,6 +7,9 @@ class RayMarchGLSLGenerator(object):
     1. Preprocess all the #include code
     2. Consider all the #pragma once code
     3. Append core.glsl code to first invocation file
+
+    NOTE: Current implementation is not aware of indirect recursion of includes , need to identify this and throw a error.
+    Best way to deal with this is add #pragma once in all headers
     '''
     VALID_PATH_PATTERN = '\S+'
     INCLUDE_PATTERN = '#include\s*(?:"{VALID_PATH_PATTERN}"|<{VALID_PATH_PATTERN}>)\s*'.format(VALID_PATH_PATTERN=VALID_PATH_PATTERN)
