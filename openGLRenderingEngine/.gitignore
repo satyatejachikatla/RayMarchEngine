@@ -2,3 +2,4 @@ vendor
 window
 vertex.glsl
 fragment.glsl
+staged.shader

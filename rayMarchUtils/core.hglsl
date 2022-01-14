@@ -1,14 +1,48 @@
 #pragma once
 #include <rayMarchUtils/utils.hglsl>
 
-/* 3d Camera */
+struct RayMarchSettings {
+	int MAX_STEPS;
+	float MAX_DIST;
+	float SURF_DIST;
+
+	vec3 lightSource;
+};
 
 struct Camera3D{
-    float zoom;
-    vec3 lookAt;
-    vec3 rayOrigin;
-    vec3 upWorld;
+	float zoom;
+	vec3 lookAt;
+	vec3 rayOrigin;
+	vec3 upWorld;
 };
+
+RayMarchSettings getDefaultRayMarchSettings(){
+	RayMarchSettings rayMarchSettings;
+
+	rayMarchSettings.MAX_DIST  = 100.;
+	rayMarchSettings.MAX_STEPS = 100;
+	rayMarchSettings.SURF_DIST = .01;
+
+	rayMarchSettings.lightSource = vec3(0.,rayMarchSettings.MAX_DIST,0.);
+
+	return rayMarchSettings;
+}
+
+Camera3D getDefaultCamera3D() {
+	Camera3D cam;
+
+	// No zoom
+	cam.zoom = 1.;
+
+	// Set the camera at -z axis looking towards the origin with mouse input
+	cam.lookAt = vec3(0.,0.,0.);
+	cam.rayOrigin = vec3(0.,0.,-1.);
+	
+	// Up of the world will always be y, unless any crazy animation
+	cam.upWorld = vec3(0.,1.,0.);
+
+	return cam;
+}
 
 /*
 	Returns rayDirection wrt to the screen
@@ -20,7 +54,7 @@ vec3 getCamera3DRay(Camera3D cam) {
 	vec3 ro = cam.rayOrigin;
 	vec3 lookat = cam.lookAt;
 	vec3 u_world = cam.upWorld;
-    vec2 screen = getPixelNormalized();
+	vec2 screen = getPixelNormalized();
 
 	vec3 f = normalize(lookat-ro);
 	vec3 r = cross(u_world,f);
@@ -31,32 +65,11 @@ vec3 getCamera3DRay(Camera3D cam) {
 
 	vec3 rd = normalize(i-ro);
 
-    return rd;
+	return rd;
 }
 
-/* 3d Camera End */
-
-
-/* Ray March Core */
-
-#define MAX_DIST        100.
-#define MAX_STEPS       100
-#define SURF_DIST       .01
-
-
-float GetDist(vec3 p){
-	vec4 s = vec4(0.,1.,6.,1.);
-	vec4 s2 = vec4(2.1,1.,6.,1.);
-
-	float sphereDist = length(p-s.xyz) - s.w;
-	float sphereDist2 = length(p-s2.xyz) - s2.w;
-	float planeDist = p.y;
-
-	float d = min(min(sphereDist,planeDist),sphereDist2);
-
-	return d;
-
-}
+/* Need to define or else will fail to compile */
+float GetDist(vec3 p);
 
 vec3 GetNormal(vec3 p){
 	float d = GetDist(p);
@@ -71,34 +84,30 @@ vec3 GetNormal(vec3 p){
 }
 
 
-float RayMarch(vec3 ro,vec3 rd){
+float RayMarch(vec3 ro,vec3 rd,RayMarchSettings rayMarchSettings){
 	float dO = 0;
 
-	for(int i=0;i<MAX_STEPS;i++){
+	for(int i=0;i<rayMarchSettings.MAX_STEPS;i++){
 		vec3 p = ro+rd*dO;
 		float dS = GetDist(p);
 		dO += dS;
-		if(dO > MAX_DIST || dS < SURF_DIST) break;
+		if(dO > rayMarchSettings.MAX_DIST || dS < rayMarchSettings.SURF_DIST) break;
 	}
 
 	return dO;
 } 
 
-float GetLight(vec3 p){
-	vec3 lightPosition = vec3(0.,5.,6.);
-	float t = u_Time*2.;
-	lightPosition.xz = vec2(3.*sin(t),2.*cos(t));
+float GetLight(vec3 p,RayMarchSettings rayMarchSettings){
+
+	vec3 lightPosition = rayMarchSettings.lightSource;
+
 	vec3 l = normalize(lightPosition-p);
 	vec3 n = GetNormal(p);
 
 	float diff = clamp(dot(n,l),0.,1.);
 
-	float d = RayMarch(p+n*SURF_DIST*1.2,l);
+	float d = RayMarch(p+n*rayMarchSettings.SURF_DIST*1.2,l,rayMarchSettings);
 	if (d<length(lightPosition-p)) diff *= .1;
 
 	return diff;
 }
-
-
-
-/* Ray March Core End */

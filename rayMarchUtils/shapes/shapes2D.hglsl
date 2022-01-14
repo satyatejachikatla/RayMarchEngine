@@ -1,3 +1,5 @@
+#pragma once
+
 vec2 N(float angle) {
 	return vec2(sin(angle),cos(angle)); 
 }
