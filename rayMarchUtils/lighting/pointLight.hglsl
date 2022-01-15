@@ -1,0 +1,30 @@
+#pragma once
+
+#include <rayMarchUtils/core.hglsl>
+#include <rayMarchUtils/lighting/common.hglsl>
+
+struct PointLight {
+	vec3 lightSource;
+};
+
+PointLight getDefaultPointLight(RayMarchSettings rayMarchSettings) {
+	PointLight pointLight;
+	pointLight.lightSource = vec3(0.,rayMarchSettings.MAX_DIST,0.);
+
+	return pointLight;
+}
+
+float GetPointLight(vec3 p,RayMarchSettings rayMarchSettings,PointLight pointLight){
+
+	vec3 lightPosition = pointLight.lightSource;
+
+	vec3 l = normalize(lightPosition-p);
+	vec3 n = GetNormal(p);
+
+	float diff = clamp(dot(n,l),0.,1.);
+
+	float d = RayMarch(p+n*rayMarchSettings.SURF_DIST*1.2,l,rayMarchSettings);
+	if (d<length(lightPosition-p)) diff *= .1;
+
+	return diff;
+}

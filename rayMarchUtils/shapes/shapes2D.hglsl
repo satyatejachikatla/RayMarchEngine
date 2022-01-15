@@ -1,22 +1,22 @@
 #pragma once
 
-vec2 N(float angle) {
+vec2 SinCos(float angle) {
 	return vec2(sin(angle),cos(angle)); 
 }
 
-float line_x(vec2 uv,float blur=0.001){
+float line_x(vec2 uv,float blur=0.01){
 	float d = smoothstep(blur,0.,abs(uv.x));
 	return d;
 }
 
-float line_y(vec2 uv,float blur=0.001){
+float line_y(vec2 uv,float blur=0.01){
 	float d = smoothstep(blur,0.,abs(uv.y));
 	return d;
 }
 
-float normal(vec2 uv,float angle,float blur=0.001) {
+float normal(vec2 uv,float angle,float blur=0.01) {
 	
-	float d= dot(uv,N(angle));
+	float d= dot(uv,SinCos(angle));
 	d = smoothstep(blur,0.,abs(d));
 
 	return d;
