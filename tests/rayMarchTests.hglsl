@@ -28,10 +28,15 @@ float Test_1(vec3 p) {
 float Test_2(vec3 p) {
     // Space folding
 
-	p = mod(p,10.);
+	vec3 pUpdated = mod(p,10.);
 
-	float sphereDist = SDSphere(p,vec3(5.,5.,5.),1.);
+	float sphereDist = SDSphere(pUpdated,vec3(5.,5.,5.),1.);
+	// float sphereEnclose = SDSphere(p,vec3(0.,0.,0.),50.);
+	float planeDist = SDXZPlaneAtYZero(p);
+
 	float d = sphereDist;
+	d = min(d,planeDist);
+	// d = min(d,-sphereEnclose);
 	
 	return d;
 }

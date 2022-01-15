@@ -21,10 +21,13 @@ float GetPointLight(vec3 p,RayMarchSettings rayMarchSettings,PointLight pointLig
 	vec3 l = normalize(lightPosition-p);
 	vec3 n = GetNormal(p);
 
-	float diff = clamp(dot(n,l),0.,1.);
+	float diffusedLight = clamp(dot(n,l),0.,1.);
 
-	float d = RayMarch(p+n*rayMarchSettings.SURF_DIST*1.2,l,rayMarchSettings);
-	if (d<length(lightPosition-p)) diff *= .1;
+	RayMarchReturn rayMarchReturn = RayMarch(p+n*rayMarchSettings.SURF_DIST*1.2,l,rayMarchSettings);
+	float d = rayMarchReturn.hitDistance;
 
-	return diff;
+	// For Shadow damp the light
+	if (d<length(lightPosition-p)) diffusedLight *= .1;
+
+	return diffusedLight;
 }

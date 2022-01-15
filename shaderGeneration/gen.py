@@ -10,6 +10,8 @@ class RayMarchGLSLGenerator(object):
 
     NOTE: Current implementation is not aware of indirect recursion of includes , need to identify this and throw a error.
     Best way to deal with this is add #pragma once in all headers
+
+    TODO: include line comment dosent work
     '''
     VALID_PATH_PATTERN = '\S+'
     INCLUDE_PATTERN = '#include\s*(?:"{VALID_PATH_PATTERN}"|<{VALID_PATH_PATTERN}>)\s*'.format(VALID_PATH_PATTERN=VALID_PATH_PATTERN)

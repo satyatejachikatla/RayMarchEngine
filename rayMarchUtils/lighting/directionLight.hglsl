@@ -1,0 +1,29 @@
+#pragma once
+
+#include <rayMarchUtils/core.hglsl>
+#include <rayMarchUtils/lighting/common.hglsl>
+
+struct DirectionLight {
+	vec3 lightDirection;
+};
+
+DirectionLight getDefaultDirectionLight() {
+	DirectionLight directionLight;
+	directionLight.lightDirection = normalize(vec3(-1.,-1.,0.));
+
+	return directionLight;
+}
+
+float GetDirectionLight(vec3 p,RayMarchSettings rayMarchSettings,DirectionLight directionLight){
+
+	vec3 l = directionLight.lightDirection;
+	vec3 n = GetNormal(p);
+
+	float diffusedLight = clamp(dot(n,l),0.,1.);
+
+	RayMarchReturn rayMarchReturn = RayMarch(p+n*rayMarchSettings.SURF_DIST*1.2,l,rayMarchSettings);
+
+	// For Shadow damp the light
+	if (rayMarchReturn.isHit) diffusedLight *= .1;
+	return diffusedLight;
+}

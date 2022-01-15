@@ -19,7 +19,7 @@ RayMarchSettings getDefaultRayMarchSettings(){
 
 	rayMarchSettings.MAX_DIST  = 100.;
 	rayMarchSettings.MAX_STEPS = 100;
-	rayMarchSettings.SURF_DIST = .01;
+	rayMarchSettings.SURF_DIST = .001;
 
 	return rayMarchSettings;
 }
@@ -67,15 +67,34 @@ vec3 getCamera3DRay(Camera3D cam) {
 /* Need to define or else will fail to compile */
 float GetDist(vec3 p);
 
-float RayMarch(vec3 ro,vec3 rd,RayMarchSettings rayMarchSettings){
+struct RayMarchReturn {
+	bool isHit;
+	float hitDistance;
+	vec3 hitAt;
+};
+
+RayMarchReturn RayMarch(vec3 ro,vec3 rd,RayMarchSettings rayMarchSettings){
+	RayMarchReturn ret;
+	ret.isHit = false;
+	ret.hitDistance = rayMarchSettings.MAX_DIST;
+	ret.hitAt = vec3(rayMarchSettings.MAX_DIST,rayMarchSettings.MAX_DIST,rayMarchSettings.MAX_DIST);
+
 	float dO = 0;
 
 	for(int i=0;i<rayMarchSettings.MAX_STEPS;i++){
 		vec3 p = ro+rd*dO;
 		float dS = GetDist(p);
 		dO += dS;
-		if(dO > rayMarchSettings.MAX_DIST || dS < rayMarchSettings.SURF_DIST) break;
+		if(dO >= rayMarchSettings.MAX_DIST) {
+			return ret;
+		}
+		if(dS < rayMarchSettings.SURF_DIST) {
+			ret.isHit = true;
+			ret.hitDistance = dO;
+			ret.hitAt = ro + rd*(dO);
+			return ret;
+		}
 	}
 
-	return dO;
+	return ret;
 }

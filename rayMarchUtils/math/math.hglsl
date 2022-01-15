@@ -5,6 +5,11 @@
 /*
     Returns Polar (theta,radius) of Cartesian point (uv.x,uv.y)
 */
+
+float convertDegreeToRadian(float degree) {
+    return degree*PI/180.;
+}
+
 vec2 convertPixelToPolar(vec2 uv) {
     uv = vec2(atan(uv.x,uv.y),length(uv));
     return uv;
