@@ -1,0 +1,5 @@
+#pragma once
+
+#include <tests/testsSet1/test1.hglsl>
+#include <tests/testsSet1/test2.hglsl>
+#include <tests/testsSet1/test3.hglsl>

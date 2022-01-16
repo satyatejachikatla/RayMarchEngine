@@ -1,0 +1,88 @@
+#pragma once
+
+#include <rayMarchUtils/core.hglsl>
+#include <rayMarchUtils/camera.hglsl>
+#include <rayMarchUtils/utils.hglsl>
+
+#include <rayMarchUtils/math/math.hglsl>
+
+#include <rayMarchUtils/lighting/pointLight.hglsl>
+#include <rayMarchUtils/lighting/directionLight.hglsl>
+
+#include <tests/testsSet1/rayMarchTestsList.hglsl>
+
+float GetDist(vec3 p){
+	return Test_2(p);
+}
+
+vec4 testSet1Main()
+{
+	vec2 uv = getPixelNormalized();
+	vec2 mouse = getMouseNormalized();
+	float time = getTime();
+
+	Camera3D cam = getDefaultCamera3D();
+	RayMarchSettings rayMarchSettings = getDefaultRayMarchSettings();
+	PointLight pointLight = getDefaultPointLight(rayMarchSettings);
+	DirectionLight directionLight = getDefaultDirectionLight();
+
+	rayMarchSettings.MAX_DIST = 1000.;
+
+	// Control speed of time
+	time = time * .05;
+
+	// Camera with mouse
+	cam.rayOrigin = vec3(-1.,1.,-1.);
+
+	// Move pitch and yaw computations to the winodw code
+	mouse = - mouse;
+	float pitch = mouse.y * 360.;
+	pitch = clamp(pitch,-89,89);
+	pitch = clamp(pitch,-45,45);
+	pitch = convertDegreeToRadian(pitch);
+
+	float yaw = mouse.x * 360.;
+	yaw = convertDegreeToRadian(yaw);
+
+	vec3 direction;
+	direction.x = cos(yaw) * cos(pitch);
+	direction.y = sin(pitch);
+	direction.z = sin(yaw) * cos(pitch);
+	direction = normalize(direction);
+
+	cam.lookAt = cam.rayOrigin  + direction;
+
+	// Point Light Source Movement
+	pointLight.lightSource = vec3(3.*sin(time),3.,2.*cos(time));
+
+	// Direction Light Source Movement
+	directionLight.lightDirection = normalize(-vec3(3.*sin(time),3.,2.*cos(time)));
+
+	vec3 rayDirection = getCamera3DRay(cam);
+
+	// RayMarch Hitpoint
+	RayMarchReturn rayMarchReturn = RayMarch(cam.rayOrigin,rayDirection,rayMarchSettings);
+
+	vec3 col = vec3(0.);
+
+	//Lighting
+	float l = 0.;
+	if (rayMarchReturn.isHit) {
+		// For the scene objects
+		l = GetPointLight(rayMarchReturn.hitAt,rayMarchSettings,pointLight);
+		l += GetDirectionLight(rayMarchReturn.hitAt,rayMarchSettings,directionLight);
+		l /= 2.;
+
+		l += 0.3; // Ambient Light
+
+		l = clamp(l,0.,1.);
+
+		col = vec3(l);
+	} else {
+		// For the backdrop sky
+		float t = 0.5*(rayDirection.y + 1.0);
+		col = (1.0-t)*vec3(1.0, 1.0, 1.0) + t*vec3(0.5, 0.7, 1.0);
+	}
+
+	return vec4(col,1.0);
+}

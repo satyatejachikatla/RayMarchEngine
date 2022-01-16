@@ -1,5 +1,7 @@
 #pragma once
 
+#include <rayMarchUtils/core.hglsl>
+
 vec3 GetNormal(vec3 p){
 	float d = GetDist(p);
 	vec2 e = vec2(0.01,0.);

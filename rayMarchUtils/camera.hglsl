@@ -1,0 +1,50 @@
+#pragma once
+
+#include <rayMarchUtils/utils.hglsl>
+
+struct Camera3D{
+	float zoom;
+	vec3 lookAt;
+	vec3 rayOrigin;
+	vec3 upWorld;
+};
+
+Camera3D getDefaultCamera3D() {
+	Camera3D cam;
+
+	// No zoom
+	cam.zoom = 1.;
+
+	// Set the camera at -z axis looking towards the origin with mouse input
+	cam.lookAt = vec3(0.,0.,0.);
+	cam.rayOrigin = vec3(0.,0.,-1.);
+	
+	// Up of the world will always be y, unless any crazy animation
+	cam.upWorld = vec3(0.,1.,0.);
+
+	return cam;
+}
+
+/*
+	Returns rayDirection wrt to the screen
+	Consider the screen as the viewing window
+*/
+vec3 getCamera3DRay(Camera3D cam) {
+
+	float zoom = cam.zoom;
+	vec3 ro = cam.rayOrigin;
+	vec3 lookat = cam.lookAt;
+	vec3 u_world = cam.upWorld;
+	vec2 screen = getPixelNormalized();
+
+	vec3 f = normalize(lookat-ro);
+	vec3 r = cross(u_world,f);
+	vec3 u = cross(f,r);
+
+	vec3 c = ro + f*zoom;
+	vec3 i = c + screen.x*r + screen.y*u;
+
+	vec3 rd = normalize(i-ro);
+
+	return rd;
+}

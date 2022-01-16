@@ -1,15 +1,16 @@
 #pragma once
 
-#include <rayMarchUtils/core.hglsl>
 #include <rayMarchUtils/lighting/common.hglsl>
 
 struct PointLight {
 	vec3 lightSource;
+	float shadowDamp;
 };
 
 PointLight getDefaultPointLight(RayMarchSettings rayMarchSettings) {
 	PointLight pointLight;
 	pointLight.lightSource = vec3(0.,rayMarchSettings.MAX_DIST,0.);
+	pointLight.shadowDamp = 0.001;
 
 	return pointLight;
 }
@@ -27,7 +28,7 @@ float GetPointLight(vec3 p,RayMarchSettings rayMarchSettings,PointLight pointLig
 	float d = rayMarchReturn.hitDistance;
 
 	// For Shadow damp the light
-	if (d<length(lightPosition-p)) diffusedLight *= .1;
+	if (d<length(lightPosition-p)) diffusedLight *= pointLight.shadowDamp;
 
 	return diffusedLight;
 }

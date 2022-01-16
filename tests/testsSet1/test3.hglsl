@@ -1,0 +1,15 @@
+#pragma once
+
+#include <rayMarchUtils/shapes/shapes3D.hglsl>
+
+float Test_3(vec3 p) {
+	// Reference
+
+	float bd = SDBox(p-vec3(0.,0.,-5.),vec3(.75));
+	float planeDist = SDXZPlaneAtYZero(p);
+
+	float d = bd;
+	d = min(d,planeDist);
+	
+	return d;
+}

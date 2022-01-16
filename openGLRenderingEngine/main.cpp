@@ -8,8 +8,8 @@
 using namespace std;
 
 int main() {
-    int width = 640;
-    int height = 480;
+    int width = 1080;
+    int height = 960;
 
     string shaderName = "./shader/staged.shader";
 

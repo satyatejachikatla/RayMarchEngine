@@ -1,0 +1,19 @@
+#pragma once
+
+#include <rayMarchUtils/shapes/shapes3D.hglsl>
+
+float Test_2(vec3 p) {
+	// Space folding
+
+	vec3 pUpdated = mod(p,10.);
+
+	float sphereDist = SDSphere(pUpdated,vec3(5.,5.,5.),1.);
+	float planeDist = SDXZPlaneAtYZero(p);
+	// float sphereEnclose = SDSphere(p,vec3(0.,0.,0.),110.);
+
+	float d = sphereDist;
+	d = min(d,planeDist);
+	// d = min(d,-sphereEnclose);
+	
+	return d;
+}

@@ -5,18 +5,20 @@
 
 struct DirectionLight {
 	vec3 lightDirection;
+	float shadowDamp;
 };
 
 DirectionLight getDefaultDirectionLight() {
 	DirectionLight directionLight;
 	directionLight.lightDirection = normalize(vec3(-1.,-1.,0.));
+	directionLight.shadowDamp = 0.001;
 
 	return directionLight;
 }
 
 float GetDirectionLight(vec3 p,RayMarchSettings rayMarchSettings,DirectionLight directionLight){
 
-	vec3 l = directionLight.lightDirection;
+	vec3 l = -directionLight.lightDirection;
 	vec3 n = GetNormal(p);
 
 	float diffusedLight = clamp(dot(n,l),0.,1.);
@@ -24,6 +26,6 @@ float GetDirectionLight(vec3 p,RayMarchSettings rayMarchSettings,DirectionLight 
 	RayMarchReturn rayMarchReturn = RayMarch(p+n*rayMarchSettings.SURF_DIST*1.2,l,rayMarchSettings);
 
 	// For Shadow damp the light
-	if (rayMarchReturn.isHit) diffusedLight *= .1;
+	if (rayMarchReturn.isHit) diffusedLight *= directionLight.shadowDamp;
 	return diffusedLight;
 }
