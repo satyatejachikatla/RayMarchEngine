@@ -1,5 +1,6 @@
 #include <ScreenQuad/ScreenQuad.hpp>
 #include <Infra/glErrors/glErrors.hpp>
+#include <Window/WindowsEvents.hpp>
 
 using namespace std;
 
@@ -57,6 +58,8 @@ void ScreenQuad::OnRender() {
 	double xpos, ypos;
 	glCall(glfwGetCursorPos(window, &xpos, &ypos));
 
+	glm::vec3 input3DPosition = windowEventsData.position;
+
 	
 	// if(m_Shader->isLoadFailed()|| glfwGetKey(window,GLFW_KEY_ENTER) == GLFW_PRESS){
 		
@@ -80,6 +83,7 @@ void ScreenQuad::OnRender() {
 		m_Shader->SetUniform1f("u_Itteration",itter++);
 		m_Shader->SetUniformVec2f("u_Resolution",glm::vec2(width,height));
 		m_Shader->SetUniformVec2f("u_Mouse",glm::vec2(xpos,ypos));
+		m_Shader->SetUniformVec3f("u_Input3DPosition",input3DPosition);
 		m_Shader->SetUniform1i("u_TextureChannels[0]",0);
 		m_Shader->SetUniform1i("u_TextureChannels[1]",1);
 		m_Shader->SetUniform1i("u_TextureChannels[2]",2);

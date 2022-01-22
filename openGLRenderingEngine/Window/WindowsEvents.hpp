@@ -2,6 +2,16 @@
 #include <GLFW/glfw3.h> // Window management
 #include <Infra/glErrors/glErrors.hpp>
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
+#include <map>
+
+struct WindowEventsData {
+    glm::vec3 position;
+};
+
+extern struct WindowEventsData windowEventsData;
 
 void window_size_callback(GLFWwindow* window, int width, int height);
 

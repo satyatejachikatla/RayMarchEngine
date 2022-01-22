@@ -7,8 +7,11 @@
 
 using namespace std;
 
+int Window::windowsCount = 0;
 
 Window::Window(int width,int height) : width(width) , height(height) ,shaderName("./shader/staged.shader"){
+	windowsCount += 1;
+	windowId = windowsCount - 1;
 	config();
 }
 

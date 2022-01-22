@@ -24,6 +24,7 @@ in vec2 v_position;
 
 uniform float u_Time;
 uniform float u_Itteration;
+uniform vec3 u_Input3DPosition;
 uniform vec2 u_Resolution;
 uniform vec2 u_Mouse;
 uniform sampler2D u_TextureChannels[5];

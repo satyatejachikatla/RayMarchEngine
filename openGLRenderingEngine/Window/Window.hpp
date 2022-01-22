@@ -11,6 +11,10 @@ class Window {
 
     private:
 
+        static int windowsCount;
+
+        int windowId;
+
         GLFWwindow* window;
         int width;
         int height;
@@ -30,6 +34,8 @@ class Window {
 
         int getWidth() { return width;}
         int getHeight() { return height;}
+
+        int getWindowId() { return windowId;}
 
         void setShaderName(std::string shaderName) {this->shaderName = shaderName;}
 };

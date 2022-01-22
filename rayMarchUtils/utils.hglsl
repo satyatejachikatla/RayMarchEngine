@@ -1,11 +1,27 @@
 #pragma once
 
+
 /*
     Returns mouse co-ords in range [-0.5,0.5] in y and appropriate linear interpolated range in x
 */
 vec2 getMouseNormalized() {
     vec2 mouse = vec2(u_Mouse.x-0.5*u_Resolution.x, u_Mouse.y)/u_Resolution.y;
     return mouse;
+}
+
+/*
+    Returns mouse co-ords in pitch (-90.,90.) and yaw [0.,360.)
+*/
+vec2 getMouseYawPitch() {
+    vec2 mouse = getMouseNormalized();
+    mouse = - mouse;
+
+	float pitch = mouse.y * 360.;
+	pitch = clamp(pitch,-89,89);
+
+	float yaw = mod(mouse.x * 360.,360.);
+
+    return vec2(yaw,pitch);
 }
 
 /*
@@ -36,4 +52,8 @@ vec2 getPixel() {
 */
 float getTime() {
     return u_Time;
+}
+
+vec3 getInput3DPosition() {
+    return u_Input3DPosition;
 }
