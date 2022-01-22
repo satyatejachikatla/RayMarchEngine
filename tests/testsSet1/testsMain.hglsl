@@ -13,11 +13,6 @@ float GetDist(vec3 p){
 	return Test_2(p);
 }
 
-#define sat(x)   clamp(x,0.,1.)
-float remap(float a,float b,float c,float d,float t){
-	return sat((t-a)/(b-a))*(d-c)+c;
-}
-
 vec4 testSet1Main()
 {
 	vec2 uv = getPixelNormalized();
