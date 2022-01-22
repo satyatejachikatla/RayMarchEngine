@@ -28,4 +28,6 @@ float GetDirectionLight(vec3 p,RayMarchSettings rayMarchSettings,DirectionLight 
 	// For Shadow damp the light
 	if (rayMarchReturn.isHit) diffusedLight *= directionLight.shadowDamp;
 	return diffusedLight;
+
+	// TODO : Add Specular Highlights
 }

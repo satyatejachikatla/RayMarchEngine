@@ -5,12 +5,16 @@
 struct PointLight {
 	vec3 lightSource;
 	float shadowDamp;
+
+	vec3 attenuationQuadraticEquation;
 };
 
 PointLight getDefaultPointLight(RayMarchSettings rayMarchSettings) {
 	PointLight pointLight;
 	pointLight.lightSource = vec3(0.,rayMarchSettings.MAX_DIST,0.);
 	pointLight.shadowDamp = 0.001;
+
+	pointLight.attenuationQuadraticEquation = vec3(0.,0.,1.);
 
 	return pointLight;
 }
@@ -30,5 +34,13 @@ float GetPointLight(vec3 p,RayMarchSettings rayMarchSettings,PointLight pointLig
 	// For Shadow damp the light
 	if (d<length(lightPosition-p)) diffusedLight *= pointLight.shadowDamp;
 
-	return diffusedLight;
+	// Attenuation with quadratic function of distance
+	float attenuation = pointLight.attenuationQuadraticEquation.x*d*d+
+						pointLight.attenuationQuadraticEquation.y*d+
+						pointLight.attenuationQuadraticEquation.z;
+	attenuation = 1./attenuation;
+
+	// TODO : Add Specular Highlights
+
+	return diffusedLight * attenuation;
 }

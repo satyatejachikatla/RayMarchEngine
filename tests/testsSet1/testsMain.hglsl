@@ -24,7 +24,7 @@ vec4 testSet1Main()
 	DirectionLight directionLight = getDefaultDirectionLight();
 
 	rayMarchSettings.MAX_DIST = 1000.;
-	rayMarchSettings.MAX_STEPS = 1000;
+	rayMarchSettings.MAX_STEPS = 100;
 
 	// Control speed of time
 	time = time * .005;
@@ -48,9 +48,8 @@ vec4 testSet1Main()
 	float l = 0.;
 	if (rayMarchReturn.isHit) {
 		// For the scene objects
-		l = GetPointLight(rayMarchReturn.hitAt,rayMarchSettings,pointLight);
-		l += GetDirectionLight(rayMarchReturn.hitAt,rayMarchSettings,directionLight);
-		l /= 2.;
+		l = 0.5 * GetPointLight(rayMarchReturn.hitAt,rayMarchSettings,pointLight);
+		l += 0.5 * GetDirectionLight(rayMarchReturn.hitAt,rayMarchSettings,directionLight);
 
 		l += 0.3; // Ambient Light
 
