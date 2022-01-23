@@ -2,14 +2,14 @@
 
 #include <rayMarchUtils/core.hglsl>
 
-vec3 GetNormal(vec3 p){
-	float d = GetDist(p);
+vec3 GetNormal(vec3 p,int selectScene){
+	float d = GetDist(p,selectScene);
 	vec2 e = vec2(0.01,0.);
 
 	vec3 n = d- vec3(
-			GetDist(p-e.xyy),
-			GetDist(p-e.yxy),
-			GetDist(p-e.yyx));
+			GetDist(p-e.xyy,selectScene),
+			GetDist(p-e.yxy,selectScene),
+			GetDist(p-e.yyx,selectScene));
 
 	return normalize(n);
 }

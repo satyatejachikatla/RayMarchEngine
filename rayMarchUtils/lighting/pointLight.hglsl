@@ -24,7 +24,7 @@ float GetPointLight(vec3 p,RayMarchSettings rayMarchSettings,PointLight pointLig
 	vec3 lightPosition = pointLight.lightSource;
 
 	vec3 l = normalize(lightPosition-p);
-	vec3 n = GetNormal(p);
+	vec3 n = GetNormal(p,rayMarchSettings.selectScene);
 
 	float diffusedLight = clamp(dot(n,l),0.,1.);
 

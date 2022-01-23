@@ -9,8 +9,14 @@
 
 #include <tests/testsSet1/rayMarchTestsList.hglsl>
 
-float GetDist(vec3 p){
-	return Test_2(p);
+float GetDist(vec3 p,int selectScene){
+
+	switch(selectScene){
+		case 1 : return Test_1(p);
+		case 2 : return Test_2(p);
+		case 3 : return Test_3(p);
+	}
+	return 0.;
 }
 
 vec4 testSet1Main()
@@ -25,6 +31,8 @@ vec4 testSet1Main()
 
 	rayMarchSettings.MAX_DIST = 1000.;
 	rayMarchSettings.MAX_STEPS = 100;
+
+	rayMarchSettings.selectScene = int(mod(time*.5,3.)+ 1);
 
 	// Control speed of time
 	time = time * .005;

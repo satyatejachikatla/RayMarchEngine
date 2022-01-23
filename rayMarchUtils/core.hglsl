@@ -4,6 +4,8 @@ struct RayMarchSettings {
 	int MAX_STEPS;
 	float MAX_DIST;
 	float SURF_DIST;
+
+	int selectScene;
 };
 
 RayMarchSettings getDefaultRayMarchSettings(){
@@ -13,11 +15,14 @@ RayMarchSettings getDefaultRayMarchSettings(){
 	rayMarchSettings.MAX_STEPS = 100;
 	rayMarchSettings.SURF_DIST = .001;
 
+	// Can be used in GetDist function to distinguish scenes
+	rayMarchSettings.selectScene = 0;
+
 	return rayMarchSettings;
 }
 
 /* Need to define or else will fail to compile */
-float GetDist(vec3 p);
+float GetDist(vec3 p,int selectScene);
 
 struct RayMarchReturn {
 	bool isHit;
@@ -35,7 +40,7 @@ RayMarchReturn RayMarch(vec3 ro,vec3 rd,RayMarchSettings rayMarchSettings){
 
 	for(int i=0;i<rayMarchSettings.MAX_STEPS;i++){
 		vec3 p = ro+rd*dO;
-		float dS = GetDist(p);
+		float dS = GetDist(p,rayMarchSettings.selectScene);
 		dO += dS;
 		if(dO >= rayMarchSettings.MAX_DIST) {
 			return ret;
