@@ -28,6 +28,7 @@ struct RayMarchReturn {
 	bool isHit;
 	float hitDistance;
 	vec3 hitAt;
+	float closestApproach;
 };
 
 RayMarchReturn RayMarch(vec3 ro,vec3 rd,RayMarchSettings rayMarchSettings){
@@ -35,13 +36,14 @@ RayMarchReturn RayMarch(vec3 ro,vec3 rd,RayMarchSettings rayMarchSettings){
 	ret.isHit = false;
 	ret.hitDistance = rayMarchSettings.MAX_DIST;
 	ret.hitAt = vec3(rayMarchSettings.MAX_DIST,rayMarchSettings.MAX_DIST,rayMarchSettings.MAX_DIST);
-
+	ret.closestApproach = rayMarchSettings.MAX_DIST;
 	float dO = 0;
 
 	for(int i=0;i<rayMarchSettings.MAX_STEPS;i++){
 		vec3 p = ro+rd*dO;
 		float dS = GetDist(p,rayMarchSettings.selectScene);
 		dO += dS;
+		ret.closestApproach = min(ret.closestApproach,dS);
 		if(dO >= rayMarchSettings.MAX_DIST) {
 			return ret;
 		}
