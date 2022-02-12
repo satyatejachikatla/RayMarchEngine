@@ -1,5 +1,5 @@
-#include <tests/testsSet1/testsMain.hglsl>
+#include <tests/testsSet2/glowExample.hglsl>
 
 void main() {
-	fragColor = testSet1Main();
+	fragColor = testSet2Main();
 }

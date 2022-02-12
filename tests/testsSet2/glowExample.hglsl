@@ -1,0 +1,73 @@
+#pragma once
+
+#include <rayMarchUtils/core.hglsl>
+#include <rayMarchUtils/camera.hglsl>
+#include <rayMarchUtils/utils.hglsl>
+#include <rayMarchUtils/lighting/directionLight.hglsl>
+
+#include <rayMarchUtils/shapes/shapes3D.hglsl>
+
+float GetDist(vec3 p,int selectScene){
+
+	float time = getTime();
+
+	vec3 pUpdated = mod(p,10.);
+
+	float sphereDist = SDSphere(pUpdated,abs(vec3(5.,5.,5.)),1.);
+	float planeDist = SDXZPlaneAtYZero(p-vec3(0.,-1.,0.));
+
+	float d = min(sphereDist,planeDist);
+
+	return d;
+
+}
+
+vec4 testSet2Main()
+{
+	float time = getTime();
+
+	Camera3D cam = getDefaultCamera3D();
+	RayMarchSettings rayMarchSettings = getDefaultRayMarchSettings();
+	DirectionLight directionLight = getDefaultDirectionLight();
+
+	rayMarchSettings.MAX_DIST = 100.;
+	rayMarchSettings.MAX_STEPS = 100;
+
+	// Control speed of time
+	time = time * .005;
+
+	// Direction Light Source Movement
+	directionLight.lightDirection = normalize(-vec3(3.*sin(time),3.,2.*cos(time)));
+
+	// Camera Ray Info
+	Camera3DRayData camera3DRayData = getCamera3DRay(cam);
+	vec3 rayDirection = camera3DRayData.rayDirection;
+
+	// RayMarch Hitpoint
+	RayMarchReturn rayMarchReturn = RayMarch(cam.rayOrigin,rayDirection,rayMarchSettings);
+
+	vec3 col = vec3(0.);
+
+	//Lighting
+	float l = 0.;
+	if (rayMarchReturn.isHit) {
+		// For the scene objects
+		l = GetDirectionLight(rayMarchReturn.hitAt,rayMarchSettings,directionLight);
+		l += 0.3; // Ambient Light
+
+		l = clamp(l,0.,1.);
+		col = vec3(l);
+
+	} else {
+		// For the backdrop sky
+		float t = 0.5*(rayDirection.y + 1.0);
+		col = (1.0-t)*vec3(1.0, 1.0, 1.0) + t*vec3(0.5, 0.7, 1.0);
+
+		// Add green tint if ray got close to object
+		t = 1. - rayMarchReturn.closestApproach;
+		t = smoothstep(0.,1.,t)*.2;
+		col += t*vec3(0.,1.,0.);
+	}
+
+	return vec4(col,1.0);
+}

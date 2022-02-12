@@ -4,15 +4,15 @@
     2D Transforms
 */
 
-vec2 translate(vec2 uv ,vec2 move) {
+vec2 translate2D(vec2 uv ,vec2 move) {
 	return uv - move;
 }
 
-vec2 scale(vec2 uv ,vec2 scaleFactor) {
+vec2 scale2D(vec2 uv ,vec2 scaleFactor) {
 	return uv*scaleFactor;
 }
 
-vec2 rotate(vec2 uv ,float angle) {
+vec2 rotate2D(vec2 uv ,float angle) {
 
     float s = sin(angle);
     float c = cos(angle);
